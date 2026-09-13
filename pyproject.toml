@@ -1,0 +1,72 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "glinet"
+version = "0.0.1"
+description = "Async client for the GL.iNet router JSON-RPC API"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+    { name = "Vithurshan Selvarajah" },
+]
+keywords = ["glinet", "router", "aiohttp", "api", "jsonrpc"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Home Automation",
+    "Topic :: System :: Networking",
+]
+dependencies = [
+    "aiohttp>=3.9",
+]
+
+[project.urls]
+Homepage = "https://github.com/vithurshanselvarajah/python-glinet-router"
+Documentation = "https://github.com/vithurshanselvarajah/python-glinet-router#readme"
+Issues = "https://github.com/vithurshanselvarajah/python-glinet-router/issues"
+Source = "https://github.com/vithurshanselvarajah/python-glinet-router"
+
+[project.optional-dependencies]
+# Pull in `passlib` if you want to use `GLinetApiClient.authenticate`. The
+# library does not require it for any other operation; `custom_call` and
+# the read-only module methods work without it.
+auth = [
+    "passlib>=1.7.4",
+]
+cli = [
+    "click>=8.1",
+]
+test = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "passlib>=1.7.4",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/glinet"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"examples" = "glinet/examples"
+
+[project.scripts]
+glinet = "glinet.__main__:main"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "BLE", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
