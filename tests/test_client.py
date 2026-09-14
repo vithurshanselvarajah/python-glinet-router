@@ -328,8 +328,8 @@ async def test_modem_status_uses_49_slot_endpoints_for_new_firmware() -> None:
     assert [request["json"]["params"] for request in session.requests] == [
         ["sid-1", "modem", "get_modem_current_interface", {}],
         ["sid-1", "modem", "get_signals", {"time": 10}],
-        ["sid-1", "modem", "get_network_status", {"bus": "cpu", "slot": 2}],
-        ["sid-1", "modem", "get_network_info", {"bus": "cpu", "slot": 2}],
+        ["sid-1", "modem", "get_network_status", {}],
+        ["sid-1", "modem", "get_network_info", {}],
     ]
 
 
@@ -337,6 +337,9 @@ async def test_modem_sms_list_uses_49_bus_payload_for_new_firmware() -> None:
     session = FakeSession(
         [
             {"result": {"interfaces": ["modem_1_1_s1", "modem_1_1_2_s2"]}},
+            {"result": {"signals": []}},
+            {"result": {"networks": []}},
+            {"result": {"networks": []}},
             {"result": {"list": [{"name": "sms-1", "bus": "1-1"}]}},
             {"result": {"list": [{"name": "sms-2", "bus": "1-1.2", "slot": 2}]}},
         ]
@@ -350,6 +353,9 @@ async def test_modem_sms_list_uses_49_bus_payload_for_new_firmware() -> None:
     ]
     assert [request["json"]["params"] for request in session.requests] == [
         ["sid-1", "modem", "get_modem_current_interface", {}],
+        ["sid-1", "modem", "get_signals", {"time": 10}],
+        ["sid-1", "modem", "get_network_status", {}],
+        ["sid-1", "modem", "get_network_info", {}],
         ["sid-1", "modem", "get_sms_list", {"bus": "1-1"}],
         ["sid-1", "modem", "get_sms_list", {"bus": "1-1.2"}],
     ]
@@ -732,13 +738,14 @@ async def test_custom_auth_hasher_can_be_registered() -> None:
     assert client.logged_in is True
 
 
-def test_constructor_with_no_session_marks_self_as_owner() -> None:
+async def test_constructor_with_no_session_marks_self_as_owner() -> None:
     client = GLinetApiClient("http://router/rpc")
     assert client._owns_session is True
     assert client._session is not None
+    await client.close()
 
 
-def test_constructor_with_session_marks_caller_as_owner() -> None:
+async def test_constructor_with_session_marks_caller_as_owner() -> None:
     session = FakeSession([])
     client = GLinetApiClient("http://router/rpc", session)
     assert client._owns_session is False

@@ -50,8 +50,4 @@ class SystemModule(BaseModule):
         return dict(response) if response else {}
 
     async def get_kmwan_status(self) -> dict[str, Any]:
-        try:
-            response = await self._call("edgerouter", "get_kmwan_status")
-        except Exception:
-            return {}
-        return dict(response) if response else {}
+        return await self._client.kmwan.get_status()

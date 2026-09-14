@@ -144,13 +144,15 @@ async def test_get_status_49_uses_bodyless_network_calls() -> None:
     network_info_call = session.requests[3]
     assert network_status_call["json"]["params"] == [
         "sid-1",
-        "call",
-        ["modem", "get_network_status", {}],
+        "modem",
+        "get_network_status",
+        {},
     ]
     assert network_info_call["json"]["params"] == [
         "sid-1",
-        "call",
-        ["modem", "get_network_info", {}],
+        "modem",
+        "get_network_info",
+        {},
     ]
 
 
@@ -237,11 +239,13 @@ async def test_get_status_49_falls_back_to_per_target_call() -> None:
     assert result["modems"][0]["network"]["ipv4"]["ip"] == "10.77.58.99"
 
     per_target_status = session.requests[4]
-    assert per_target_status["json"]["params"][2] == [
+    assert per_target_status["json"]["params"] == [
+        "sid-1",
         "modem",
         "get_network_status",
-        {"bus": "0001:01:00.0", "slot": "1"},
+        {"bus": "0001", "slot": 1},
     ]
+    assert result["modems"][0]["bus"] == "0001:01:00.0"
 
 
 def test_bus_aliases_expand_pci_to_short_form() -> None:
@@ -356,8 +360,9 @@ async def test_get_sim_config_calls_endpoint_with_bus() -> None:
     request = session.requests[0]
     assert request["json"]["params"] == [
         "sid-1",
-        "call",
-        ["modem", "get_sim_config", {"bus": "0001:01:00.0"}],
+        "modem",
+        "get_sim_config",
+        {"bus": "0001:01:00.0"},
     ]
 
 
@@ -421,8 +426,9 @@ async def test_get_sms_list_49_uses_full_pci_bus() -> None:
     sms_call = session.requests[4]
     assert sms_call["json"]["params"] == [
         "sid-1",
-        "call",
-        ["modem", "get_sms_list", {"bus": "0001:01:00.0"}],
+        "modem",
+        "get_sms_list",
+        {"bus": "0001:01:00.0"},
     ]
 
 

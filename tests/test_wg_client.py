@@ -174,10 +174,14 @@ async def test_wg_vpn_client_get_tunnel_falls_back_on_legacy_firmware() -> None:
         def post(
             self,
             url: str,
-            json: dict[str, Any],
-            timeout: int,
-            ssl: Any = None,  # matches the parent / aiohttp signature
-        ):
+            *,
+            json: dict[str, Any] | None = None,
+            ssl: Any = None,
+            **kwargs: Any,
+        ) -> Any:
+            # Match the call signature that AiohttpTransport uses
+            # (keyword-only ``json`` and ``ssl``), and ignore any extra
+            # kwargs the transport might add in the future.
             from tests._fakes import FakePostContext, FakeResponse
 
             return FakePostContext(
