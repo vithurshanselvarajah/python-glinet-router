@@ -1,0 +1,67 @@
+version: 2
+
+# Dependabot is intentionally configured to target the `development` branch
+# only. The `main` branch represents released code and is updated only via
+# the `release:` workflow. Dependabot PRs are merged into `development`
+# once CI passes, then ride the next release.
+
+updates:
+  # Runtime and test dependencies for the library itself.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    target-branch: "development"
+    labels:
+      - "dependencies"
+      - "python"
+    assignees:
+      - "@vithurshanselvarajah"
+    commit-message:
+      prefix: "deps"
+      prefix-development: "deps(dev)"
+      include: "scope"
+    pull-request-branch-name:
+      separator: "-"
+    # Bundle noisy GitHub Action bumps into a single weekly PR. Saves
+    # inbox space without losing any signal.
+    groups:
+      actions-bundle:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+    # Stay on patch bumps automatically; minor/major still require
+    # human eyes because they can change runtime behaviour.
+    ignore:
+      - dependency-name: "passlib"
+        # passlib is in the `[auth]` optional extra; a bump rarely
+        # matters and historically has caused noisy release notes.
+        update-types: ["version-update"]
+
+  # GitHub Actions used in workflows/. Same target branch.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    target-branch: "development"
+    labels:
+      - "dependencies"
+      - "ci"
+    assignees:
+      - "@vithurshanselvarajah"
+    commit-message:
+      prefix: "ci"
+      prefix-development: "ci(dev)"
+      include: "scope"
+    pull-request-branch-name:
+      separator: "-"
