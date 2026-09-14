@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from glinet.const import LONG_TIMEOUT
+from glinet_router.const import LONG_TIMEOUT
 
 from .base import BaseModule
 

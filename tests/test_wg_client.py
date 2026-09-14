@@ -2,8 +2,8 @@ from typing import Any
 
 import pytest
 
-from glinet.client import GLinetApiClient
-from glinet.const import FIRMWARE_4_8, FIRMWARE_4_9
+from glinet_router.client import GLinetApiClient
+from glinet_router.const import FIRMWARE_4_8, FIRMWARE_4_9
 from tests._fakes import FakeSession
 
 
@@ -146,7 +146,7 @@ async def test_future_versions_keep_using_4_9_peer_payload(
 
 
 async def test_wg_vpn_client_exposes_get_tunnel() -> None:
-    from glinet.modules.vpn_client import VpnClientModule
+    from glinet_router.modules.vpn_client import VpnClientModule
 
     assert hasattr(VpnClientModule, "get_tunnel")
     assert hasattr(VpnClientModule, "get_status")
@@ -165,7 +165,7 @@ async def test_wg_vpn_client_exposes_get_tunnel() -> None:
 
 
 async def test_wg_vpn_client_get_tunnel_falls_back_on_legacy_firmware() -> None:
-    from glinet.exceptions import NonZeroResponse
+    from glinet_router.exceptions import NonZeroResponse
 
     class _BoomSession(FakeSession):
         def __init__(self) -> None:

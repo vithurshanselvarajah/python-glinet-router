@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from glinet.const import DEFAULT_TIMEOUT
+from glinet_router.const import DEFAULT_TIMEOUT
 
 if TYPE_CHECKING:
-    from glinet.client import GLinetApiClient
+    from glinet_router.client import GLinetApiClient
 
 
 class BaseModule:

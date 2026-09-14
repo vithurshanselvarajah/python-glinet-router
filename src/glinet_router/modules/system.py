@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from glinet.const import LONG_TIMEOUT
-from glinet.models import RouterStatus, SystemInfo
-from glinet.utils import decode_firmware_version
+from glinet_router.const import LONG_TIMEOUT
+from glinet_router.models import RouterStatus, SystemInfo
+from glinet_router.utils import decode_firmware_version
 
 from .base import BaseModule
 

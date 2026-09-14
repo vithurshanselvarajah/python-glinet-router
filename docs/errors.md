@@ -50,7 +50,7 @@ For convenience, `glinet` re-exports `aiohttp.ClientError` as
 covers both library and transport errors:
 
 ```python
-from glinet import APIClientError, ClientError
+from glinet_router import APIClientError, ClientError
 
 try:
     await client.system.get_info()

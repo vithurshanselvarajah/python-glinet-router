@@ -4,14 +4,14 @@ from typing import TYPE_CHECKING, Any
 
 from aiohttp import ClientError
 
-from glinet.const import FIRMWARE_4_9
-from glinet.exceptions import APIClientError
+from glinet_router.const import FIRMWARE_4_9
+from glinet_router.exceptions import APIClientError
 
 from .base import BaseModule
 from .vpn_client import VpnClientModule
 
 if TYPE_CHECKING:
-    from glinet.client import GLinetApiClient
+    from glinet_router.client import GLinetApiClient
 
 
 class WireGuardModule(BaseModule):

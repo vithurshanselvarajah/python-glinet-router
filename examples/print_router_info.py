@@ -12,7 +12,7 @@ from __future__ import annotations
 import argparse
 import asyncio
 
-from glinet import GLinetApiClient
+from glinet_router import GLinetApiClient
 
 
 async def main() -> None:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from glinet.models import WifiInterfaceInfo
+from glinet_router.models import WifiInterfaceInfo
 
 from .base import BaseModule
 

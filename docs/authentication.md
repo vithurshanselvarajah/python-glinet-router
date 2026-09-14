@@ -40,7 +40,7 @@ The algorithm and digest tables are class-level dicts, so you can extend
 them on the instance (or in a subclass) without touching the library:
 
 ```python
-from glinet import GLinetApiClient
+from glinet_router import GLinetApiClient
 from passlib.hash import sha512_crypt
 
 client = GLinetApiClient("http://router/rpc")
@@ -62,7 +62,7 @@ implements a `refresh_session_token` helper that catches
 If you build a long-running consumer, do the same:
 
 ```python
-from glinet import TokenError
+from glinet_router import TokenError
 
 async def safe_call(client, coro):
     try:

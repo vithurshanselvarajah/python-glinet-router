@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from glinet.client import GLinetApiClient
-from glinet.const import FIRMWARE_4_9
-from glinet.modules.modem import (
+from glinet_router.client import GLinetApiClient
+from glinet_router.const import FIRMWARE_4_9
+from glinet_router.modules.modem import (
     ModemModule,
     _index_networks_by_bus_slot,
     _target_lookup_key,
@@ -249,7 +249,7 @@ async def test_get_status_49_falls_back_to_per_target_call() -> None:
 
 
 def test_bus_aliases_expand_pci_to_short_form() -> None:
-    from glinet.modules.modem import _bus_aliases
+    from glinet_router.modules.modem import _bus_aliases
 
     assert _bus_aliases("0001:01:00.0") == ["0001:01:00.0", "0001", "0001:01:00"]
     assert _bus_aliases("0001-0200.0") == ["0001-0200.0", "0001-0200"]
@@ -258,7 +258,7 @@ def test_bus_aliases_expand_pci_to_short_form() -> None:
 
 
 def test_targets_from_interface_handles_short_bus_form() -> None:
-    from glinet.modules.modem import _targets_from_interface
+    from glinet_router.modules.modem import _targets_from_interface
 
     assert _targets_from_interface("modem_0001_s1") == [{"bus": "0001", "slot": 1}]
     assert _targets_from_interface("modem_0001_0200_0_s1") == [{"bus": "0001-0200.0", "slot": 1}]

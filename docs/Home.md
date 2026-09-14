@@ -36,7 +36,7 @@ pip install glinet
 
 ```python
 import asyncio
-from glinet import GLinetApiClient
+from glinet_router import GLinetApiClient
 
 
 async def main() -> None:

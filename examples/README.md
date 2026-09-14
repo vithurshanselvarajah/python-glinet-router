@@ -23,5 +23,5 @@ python examples/print_router_info.py --host http://192.168.8.1 --password your-p
 2. Make it executable directly (`chmod +x`) and add a `#!/usr/bin/env python3`
    shebang if you want.
 3. Document what it does in the table above.
-4. Use only the public `glinet` API (`from glinet import ...`) — do not reach
+4. Use only the public `glinet` API (`from glinet_router import ...`) — do not reach
    into the package internals.

@@ -2,18 +2,18 @@ from typing import Any
 
 import pytest
 
-from glinet.client import (
+from glinet_router.client import (
     GLinetApiClient,
     _extract_response_data,
 )
-from glinet.exceptions import (
+from glinet_router.exceptions import (
     APIClientError,
     AuthenticationError,
     NonZeroResponse,
     TokenError,
     UnsuccessfulRequest,
 )
-from glinet.models import WifiInterfaceInfo
+from glinet_router.models import WifiInterfaceInfo
 
 from tests._fakes import FakeResponse, FakeSession
 
@@ -704,7 +704,7 @@ async def test_unsupported_digest_lists_supported() -> None:
 def test_client_error_is_re_exported() -> None:
     from aiohttp import ClientError as AiohttpClientError
 
-    from glinet import ClientError
+    from glinet_router import ClientError
 
     assert ClientError is AiohttpClientError
 

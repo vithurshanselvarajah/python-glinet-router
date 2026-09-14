@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from glinet.models import (
+from glinet_router.models import (
     ModemInfo,
     RouterStatus,
     SystemInfo,

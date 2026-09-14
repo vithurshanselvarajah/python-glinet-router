@@ -4,9 +4,9 @@ from typing import Any
 
 from aiohttp import ClientError
 
-from glinet.const import FIRMWARE_4_9, LONG_TIMEOUT
-from glinet.exceptions import APIClientError, NonZeroResponse
-from glinet.models import ModemInfo
+from glinet_router.const import FIRMWARE_4_9, LONG_TIMEOUT
+from glinet_router.exceptions import APIClientError, NonZeroResponse
+from glinet_router.models import ModemInfo
 
 from .base import BaseModule
 
