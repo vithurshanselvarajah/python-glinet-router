@@ -15,8 +15,8 @@ from __future__ import annotations
 import argparse
 import asyncio
 
-from glinet import GLinetApiClient
-from glinet.exceptions import APIClientError, NonZeroResponse
+from glinet_router import GLinetApiClient
+from glinet_router.exceptions import APIClientError, NonZeroResponse
 
 
 async def main() -> None:

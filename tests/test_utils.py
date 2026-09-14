@@ -1,6 +1,6 @@
 import pytest
 
-from glinet.utils import decode_firmware_version
+from glinet_router.utils import decode_firmware_version
 
 
 @pytest.mark.parametrize(

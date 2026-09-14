@@ -6,7 +6,7 @@ from .base import BaseModule
 from .vpn_client import VpnClientModule
 
 if TYPE_CHECKING:
-    from glinet.client import GLinetApiClient
+    from glinet_router.client import GLinetApiClient
 
 
 class OvpnModule(BaseModule):

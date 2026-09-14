@@ -15,7 +15,7 @@ import argparse
 import asyncio
 import json
 
-from glinet import GLinetApiClient
+from glinet_router import GLinetApiClient
 
 
 async def main() -> None:

@@ -4,9 +4,9 @@ from typing import Any
 
 from aiohttp import ClientError
 
-from glinet.const import FIRMWARE_4_9, LONG_TIMEOUT
-from glinet.exceptions import APIClientError, NonZeroResponse
-from glinet.models import ModemInfo
+from glinet_router.const import FIRMWARE_4_9, LONG_TIMEOUT
+from glinet_router.exceptions import APIClientError, NonZeroResponse
+from glinet_router.models import ModemInfo
 
 from .base import BaseModule
 
@@ -142,9 +142,17 @@ class ModemModule(BaseModule):
 
         modems: list[dict[str, Any]] = []
         for target in targets:
-            modem = await self._get_modem_49_status(
-                target, signals, network_statuses, network_infos
+            network_status, network_info = _lookup_network_pair(
+                target, network_statuses, network_infos
             )
+            if not network_status and not network_info:
+                modem = await self._get_modem_49_status(
+                    target, signals, None, None
+                )
+            else:
+                modem = await self._get_modem_49_status(
+                    target, signals, network_statuses, network_infos
+                )
             if modem is not None:
                 modems.append(modem)
         return {"modems": modems}
@@ -233,6 +241,10 @@ class ModemModule(BaseModule):
 
     async def _get_sms_list_49(self) -> list[dict[str, Any]]:
         targets = await self._get_modem_49_targets()
+        try:
+            await self._call("modem", "get_signals", {"time": 10})
+        except NonZeroResponse:
+            pass
         try:
             network_statuses, network_infos = await self._fetch_networks_49()
         except (APIClientError, ClientError, TimeoutError, OSError):
@@ -394,7 +406,34 @@ def _lookup_network_pair(
                 dict(network_statuses.get(key) or {}),
                 dict(network_infos.get(key) or {}),
             )
+    status_match = _match_by_bus_prefix(network_statuses, bus, slot)
+    info_match = _match_by_bus_prefix(network_infos, bus, slot)
+    if status_match is not None or info_match is not None:
+        return (
+            dict(status_match or {}),
+            dict(info_match or {}),
+        )
     return {}, {}
+
+
+def _match_by_bus_prefix(
+    indexed: dict[tuple[str, str], dict[str, Any]],
+    bus: str,
+    slot: str,
+) -> dict[str, Any] | None:
+    for key, record in indexed.items():
+        record_bus, record_slot = key
+        if record_slot != slot:
+            continue
+        if not bus:
+            return record
+        if record_bus == bus:
+            return record
+        if record_bus.startswith(f"{bus}:"):
+            return record
+        if bus.startswith(f"{record_bus}:"):
+            return record
+    return None
 
 
 def _flatten_sms_messages(response: Any) -> list[dict[str, Any]]:
@@ -412,13 +451,14 @@ def _index_networks_by_bus_slot(
 ) -> dict[tuple[str, str], dict[str, Any]]:
     payload: Any = response
     if isinstance(payload, dict):
-        payload = payload.get("networks")
-    networks: list[Any]
-    if isinstance(payload, list):
-        networks = payload
-    else:
-        first = _first_dict(payload)
-        networks = [first] if first else []
+        nested = payload.get("networks")
+        if nested is not None:
+            payload = nested
+        elif "bus" in payload and "slot" in payload:
+            payload = [payload]
+        else:
+            payload = []
+    networks: list[Any] = payload if isinstance(payload, list) else []
 
     indexed: dict[tuple[str, str], dict[str, Any]] = {}
     for network in networks:
@@ -429,7 +469,5 @@ def _index_networks_by_bus_slot(
         if bus_value is None or slot_value is None:
             continue
         slot_str = str(slot_value)
-        record = dict(network)
-        for alias in _bus_aliases(str(bus_value)):
-            indexed[(alias, slot_str)] = record
+        indexed[(str(bus_value), slot_str)] = dict(network)
     return indexed

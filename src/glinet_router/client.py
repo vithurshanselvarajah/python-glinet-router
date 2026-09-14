@@ -87,19 +87,8 @@ async def _extract_response_data(response: ClientResponse) -> Any:
 class GLinetApiClient:
     _firmware_version: tuple[int, int, int, int] | None = None
 
-    # Mapping of GL.iNet "alg" values to passlib hashers. Populated lazily
-    # on the first call to `authenticate` so that callers using only the
-    # read-only API (or pre-existing sessions) do not have to install
-    # `passlib`. Extend at runtime to add new firmware variants.
-    auth_hashers: dict[int, Any] = {}
-
-    # Mapping of GL.iNet "hash-method" values to hashlib constructors.
-    # `hashlib` is always available, so this table is populated eagerly.
-    auth_digests: dict[str, Any] = {
-        "md5": hashlib.md5,
-        "sha256": hashlib.sha256,
-        "sha512": hashlib.sha512,
-    }
+    auth_hashers: dict[int, Any]
+    auth_digests: dict[str, Any]
 
     def __init__(
         self,
@@ -130,6 +119,13 @@ class GLinetApiClient:
             )
         self.sid = sid
         self._logged_in = sid is not None
+
+        self.auth_hashers = {}
+        self.auth_digests = {
+            "md5": hashlib.md5,
+            "sha256": hashlib.sha256,
+            "sha512": hashlib.sha512,
+        }
 
         self.system = SystemModule(self)
         self.modem = ModemModule(self)

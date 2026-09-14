@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 from .base import BaseModule
 
 if TYPE_CHECKING:
-    from glinet.client import GLinetApiClient
+    from glinet_router.client import GLinetApiClient
 
 
 class FirewallModule(BaseModule):

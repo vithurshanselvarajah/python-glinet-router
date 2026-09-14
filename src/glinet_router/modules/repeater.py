@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from glinet.const import LONG_TIMEOUT, SCAN_TIMEOUT
+from glinet_router.const import LONG_TIMEOUT, SCAN_TIMEOUT
 
 from .base import BaseModule
 

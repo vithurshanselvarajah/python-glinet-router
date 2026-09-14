@@ -8,7 +8,7 @@ enum.
 ## Connection states
 
 ```python
-from glinet import TailscaleConnection
+from glinet_router import TailscaleConnection
 
 TailscaleConnection.DISCONNECTED              # 0
 TailscaleConnection.LOGIN_REQUIRED            # 1

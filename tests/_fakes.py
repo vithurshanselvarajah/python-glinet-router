@@ -48,9 +48,29 @@ class FakeSession:
         self.requests: list[dict[str, Any]] = []
 
     def post(
-        self, url: str, json: dict[str, Any], timeout: int, ssl: Any = None
+        self,
+        url: str,
+        *,
+        json: dict[str, Any] | None = None,
+        ssl: Any = None,
+        **kwargs: Any,
     ) -> FakePostContext:
-        self.requests.append({"url": url, "json": json, "timeout": timeout, "ssl": ssl})
+        """Match the call signature of :class:`aiohttp.ClientSession.post`.
+
+        ``AiohttpTransport.post`` invokes the underlying session with
+        ``self._session.post(url, json=..., ssl=...)``. Mirror that shape
+        here so the fake stays structurally identical to the real
+        ``aiohttp.ClientSession`` and accepts any future kwargs the
+        transport might add (timeout, headers, params, etc.).
+        """
+        self.requests.append(
+            {"url": url, "json": json, "ssl": ssl, **kwargs}
+        )
+        if not self.responses:
+            raise AssertionError(
+                "FakeSession received a request with no remaining response: "
+                f"url={url!r}, json={json!r}"
+            )
         payload = self.responses.pop(0)
         if isinstance(payload, FakeResponse):
             return FakePostContext(payload)

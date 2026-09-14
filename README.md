@@ -37,7 +37,7 @@ pip install glinet
 ```python
 import asyncio
 from aiohttp import ClientSession
-from glinet import GLinetApiClient, AuthenticationError
+from glinet_router import GLinetApiClient, AuthenticationError
 
 
 async def main() -> None:

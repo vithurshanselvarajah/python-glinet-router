@@ -1,8 +1,8 @@
 import asyncio
 from typing import Any
 
-from glinet.exceptions import APIClientError
-from glinet.models import TailscaleConnection
+from glinet_router.exceptions import APIClientError
+from glinet_router.models import TailscaleConnection
 
 from .base import BaseModule
 
