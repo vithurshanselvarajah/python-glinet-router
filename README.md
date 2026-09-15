@@ -1,8 +1,7 @@
 # glinet
 
 [![CI](https://github.com/vithurshanselvarajah/python-glinet-router/actions/workflows/ci.yml/badge.svg)](https://github.com/vithurshanselvarajah/python-glinet-router/actions/workflows/ci.yml)
-[![PyPI](https://img.shields.io/pypi/v/glinet)](https://pypi.org/project/glinet/)
-[![Python](https://img.shields.io/pypi/pyversions/glinet)](https://pypi.org/project/glinet/)
+[![PyPI](https://img.shields.io/pypi/v/glinet)](https://pypi.org/project/glinet-router/)
 [![License](https://img.shields.io/github/license/vithurshanselvarajah/python-glinet-router)](LICENSE)
 [![Code style: ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
